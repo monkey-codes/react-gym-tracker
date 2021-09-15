@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import { createTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
+import HeaderBar from "./components/HeaderBar";
 
 function App() {
   const theme = React.useMemo(
@@ -16,6 +17,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <HeaderBar />
       <div className="App">
         <header className="App-header">
           <h1>Hello world</h1>
