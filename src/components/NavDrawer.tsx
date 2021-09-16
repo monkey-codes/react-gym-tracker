@@ -1,18 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Divider,
   Drawer,
   IconButton,
   List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   makeStyles,
   Theme,
 } from "@material-ui/core";
-import InboxIcon from "@material-ui/icons/Inbox";
-import MailIcon from "@material-ui/icons/Mail";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ProgramContext from "../store/ProgramContextProvider";
+import NavWeekItem from "./NavWeekItem";
 
 const useStyles = makeStyles((theme: Theme) => ({
   list: {
@@ -24,6 +21,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(0, 1),
     justifyContent: "flex-end",
   },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular,
+  },
 }));
 
 type NavDrawerProps = {
@@ -32,6 +33,7 @@ type NavDrawerProps = {
 };
 const NavDrawer: React.FC<NavDrawerProps> = (props) => {
   const classes = useStyles();
+  const program = useContext(ProgramContext);
   const handleDrawerClose = () => {
     props.onClose();
   };
@@ -45,13 +47,8 @@ const NavDrawer: React.FC<NavDrawerProps> = (props) => {
         </div>
         <Divider />
         <List className={classes.list}>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
+          {program.weeks.map((week) => (
+            <NavWeekItem week={week} onNavItemClicked={handleDrawerClose} />
           ))}
         </List>
       </Drawer>
