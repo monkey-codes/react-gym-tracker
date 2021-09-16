@@ -17,14 +17,14 @@ export type Day = {
   exerciseGroups: ExerciseGroup[];
 };
 
-type ExerciseGroup = {
+export type ExerciseGroup = {
   name: string;
   description: string;
   sets: number;
   exercises: Exercise[];
 };
 
-type Exercise = {
+export type Exercise = {
   name: string;
   reps: number;
 };

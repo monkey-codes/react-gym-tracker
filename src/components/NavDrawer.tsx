@@ -48,7 +48,7 @@ const NavDrawer: React.FC<NavDrawerProps> = (props) => {
         <Divider />
         <List className={classes.list}>
           {program.weeks.map((week) => (
-            <NavWeekItem week={week} onNavItemClicked={handleDrawerClose} />
+            <NavWeekItem key={week.id} week={week} onNavItemClicked={handleDrawerClose} />
           ))}
         </List>
       </Drawer>

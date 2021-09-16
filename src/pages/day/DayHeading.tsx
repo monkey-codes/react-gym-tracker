@@ -5,7 +5,9 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     resetContainer: {
-      padding: theme.spacing(3),
+      paddingLeft: theme.spacing(3),
+      paddingTop: theme.spacing(3),
+      marginBottom: 0
     },
   })
 );

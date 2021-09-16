@@ -51,6 +51,7 @@ const NavWeekItem: React.FC<{ week: Week; onNavItemClicked: () => void }> = ({
         <List component="div" disablePadding>
           {week.days.map((day) => (
             <ListItem
+              key={day.id}
               button
               onClick={onNavItemClicked}
               className={classes.nested}

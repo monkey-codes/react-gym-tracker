@@ -1,6 +1,6 @@
-import React, { useContext, useMemo, useState } from "react";
-import ProgramContext, { Day, Week } from "../../store/ProgramContextProvider";
-import { useParams } from "react-router-dom";
+import React, {useContext, useMemo} from "react";
+import ProgramContext, {Day, Week} from "../../store/ProgramContextProvider";
+import {useParams} from "react-router-dom";
 
 const DayContext = React.createContext<Day | undefined>({
   name: "default",
@@ -13,7 +13,7 @@ export const DayContextProvider: React.FC = (props) => {
   const program = useContext(ProgramContext);
   const week = useMemo<Week | undefined>(
     () => program.weeks.find((value) => value.id === parseInt(params.weekId)),
-    [params.weekId]
+    [params.weekId, program.weeks]
   );
   const day = useMemo<Day | undefined>(
     () => week?.days.find((value) => value.id === parseInt(params.dayId)),

@@ -3,6 +3,7 @@ import Page from "../Page";
 import { DayContextProvider } from "./DayContextProvider";
 import { Container, Paper } from "@material-ui/core";
 import DayHeading from "./DayHeading";
+import ExerciseGroupStepper from "./ExerciseGroupStepper";
 
 const DayPage: React.FC = (props) => {
   return (
@@ -11,8 +12,8 @@ const DayPage: React.FC = (props) => {
         <Container maxWidth="sm">
           <Paper>
             <DayHeading />
+            <ExerciseGroupStepper />
           </Paper>
-          {/*<ExerciseGroupStepper />*/}
         </Container>
       </DayContextProvider>
     </Page>
