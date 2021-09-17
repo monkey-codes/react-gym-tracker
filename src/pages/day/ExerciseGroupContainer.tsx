@@ -2,20 +2,17 @@ import React from "react";
 import { ExerciseGroup } from "../../store/ProgramContextProvider";
 import {
   Button,
-  Card,
-  CardActions,
-  CardContent,
   createStyles,
   Grid,
-  makeStyles,
-  MobileStepper,
-  TextField,
+  makeStyles, MobileStepper,
   Theme,
   Typography,
 } from "@material-ui/core";
-import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
-import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
+import SwipeableViews from "react-swipeable-views";
 import ExerciseForm from "./ExerciseForm";
+import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
+import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
+
 
 type ExerciseGroupProps = {
   exerciseGroup: ExerciseGroup;
@@ -33,18 +30,42 @@ const ExerciseGroupContainer: React.FC<ExerciseGroupProps> = ({
     setActiveSet((prevActiveStep) => prevActiveStep - 1);
   };
 
+  const handleSwipe = (e: any, i: any) => {
+    setActiveSet(e);
+  };
+
   return (
     <>
       <form noValidate autoComplete="off">
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography color="textSecondary" variant="subtitle1">
+            <Typography color="textSecondary" variant="body2">
               {exerciseGroup.description}
             </Typography>
           </Grid>
-          {exerciseGroup.exercises.map((exercise) => (
-            <ExerciseForm key={`${exercise.name}-${activeSet}`} exercise={exercise} activeSet={activeSet}/>
-          ))}
+          <Grid item xs={12}>
+            <SwipeableViews
+              index={activeSet}
+              onChangeIndex={handleSwipe}
+            >
+              {[...new Array(exerciseGroup.sets)].map((e, set) => {
+                return (
+                  <div key={`${exerciseGroup.name}-${set}`}>
+                    <Typography variant={"subtitle1"}>
+                      Set {activeSet + 1}
+                    </Typography>
+                    {exerciseGroup.exercises.map((exercise) => (
+                      <ExerciseForm
+                        key={`${exercise.name}-${set}`}
+                        exercise={exercise}
+                        activeSet={set}
+                      />
+                    ))}
+                  </div>
+                );
+              })}
+            </SwipeableViews>
+          </Grid>
           <Grid item xs={12}>
             <MobileStepper
               steps={exerciseGroup.sets}
@@ -57,7 +78,7 @@ const ExerciseGroupContainer: React.FC<ExerciseGroupProps> = ({
                   onClick={handleNext}
                   disabled={activeSet === exerciseGroup.sets - 1}
                 >
-                  Next Set
+                  + Set
                   <KeyboardArrowRightIcon />
                 </Button>
               }
@@ -68,7 +89,7 @@ const ExerciseGroupContainer: React.FC<ExerciseGroupProps> = ({
                   disabled={activeSet === 0}
                 >
                   <KeyboardArrowLeftIcon />
-                  Previous Set
+                   - Set
                 </Button>
               }
             />

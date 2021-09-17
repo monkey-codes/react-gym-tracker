@@ -1,28 +1,41 @@
 import {Exercise} from "../../store/ProgramContextProvider";
-import {Grid, TextField, Typography} from "@material-ui/core";
+import {createStyles, makeStyles, TextField, Theme, Typography} from "@material-ui/core";
 import React from "react";
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    item: {
+      // height: 100,
+      marginBottom: theme.spacing(2)
+    }
+  })
+);
+
 const ExerciseForm: React.FC<{exercise: Exercise, activeSet: number}> =  ({exercise, activeSet}) => {
+  const classes = useStyles();
+
   return  <>
-    <Grid item xs={12}>
-      <Typography variant="h6">
-        {exercise.name} - Set {activeSet + 1}
+    <div className={classes.item}>
+      <Typography variant="body2">
+        {exercise.name}
       </Typography>
-    </Grid>
-    <Grid item xs={12}>
+    </div>
+    <div className={classes.item}>
       <TextField
         fullWidth
         label="Weight"
         variant="outlined"
+        type="number"
       />
-    </Grid>
-    <Grid item xs={12}>
+    </div>
+    <div className={classes.item}>
       <TextField
         fullWidth
         label="Reps"
         variant="outlined"
+        type="number"
       />
-    </Grid>
+    </div>
   </>
 };
 

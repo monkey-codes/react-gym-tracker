@@ -1,11 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import React, {useContext, useEffect} from "react";
 import {
   Button,
-  Container,
   createStyles,
   Fab,
   Grid,
-  IconButton,
   makeStyles,
   Paper,
   Step,
@@ -16,15 +14,16 @@ import {
   Typography,
 } from "@material-ui/core";
 import DayContext from "./DayContextProvider";
-import ExerciseGroup from "./ExerciseGroupContainer";
 import ExerciseGroupContainer from "./ExerciseGroupContainer";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     button: {
       marginTop: theme.spacing(1),
       marginRight: theme.spacing(1),
+      boxShadow: 'unset'
     },
     actionsContainer: {
       display: "flex",
