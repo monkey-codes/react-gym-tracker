@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Button,
   createStyles,
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       marginTop: theme.spacing(1),
       marginRight: theme.spacing(1),
-      boxShadow: 'unset'
+      boxShadow: "unset",
     },
     actionsContainer: {
       display: "flex",
@@ -86,15 +86,27 @@ const ExerciseGroupStepper: React.FC = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                   <div className={classes.actionsContainer}>
-                    <Fab
-                      size="small"
-                      color="primary"
-                      className={classes.button}
-                      onClick={handleNext}
-                      variant="circular"
-                    >
-                      <ArrowDownwardIcon />
-                    </Fab>
+                    {activeStep !== day!.exerciseGroups.length - 1 && (
+                      <Fab
+                        size="small"
+                        color="primary"
+                        className={classes.button}
+                        onClick={handleNext}
+                        variant="circular"
+                      >
+                        <ArrowDownwardIcon />
+                      </Fab>
+                    )}
+                    {activeStep === day!.exerciseGroups.length - 1 && (
+                      <Button
+                        fullWidth
+                        color="primary"
+                        variant="contained"
+                        onClick={handleNext}
+                      >
+                        Save
+                      </Button>
+                    )}
                   </div>
                 </Grid>
               </Grid>

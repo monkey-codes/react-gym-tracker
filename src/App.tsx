@@ -4,13 +4,16 @@ import { createTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
 import { ProgramContextProvider } from "./store/ProgramContextProvider";
 import DayPage from "./pages/day/DayPage";
 import { Redirect, Route, Switch } from "react-router-dom";
-
+import blue from "@material-ui/core/colors/blue";
 function App() {
   const theme = React.useMemo(
     () =>
       createTheme({
         palette: {
           type: "dark",
+          primary: {
+            main: blue[500],
+          },
         },
       }),
     []

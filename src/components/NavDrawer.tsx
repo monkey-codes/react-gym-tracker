@@ -6,6 +6,7 @@ import {
   List,
   makeStyles,
   Theme,
+  Typography,
 } from "@material-ui/core";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ProgramContext from "../store/ProgramContextProvider";
@@ -41,6 +42,7 @@ const NavDrawer: React.FC<NavDrawerProps> = (props) => {
     <>
       <Drawer anchor="left" open={props.open}>
         <div className={classes.drawerHeader}>
+          <Typography variant="h6">{program.name}</Typography>
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
@@ -48,7 +50,11 @@ const NavDrawer: React.FC<NavDrawerProps> = (props) => {
         <Divider />
         <List className={classes.list}>
           {program.weeks.map((week) => (
-            <NavWeekItem key={week.id} week={week} onNavItemClicked={handleDrawerClose} />
+            <NavWeekItem
+              key={week.id}
+              week={week}
+              onNavItemClicked={handleDrawerClose}
+            />
           ))}
         </List>
       </Drawer>

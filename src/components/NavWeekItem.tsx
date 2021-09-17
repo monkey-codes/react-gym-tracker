@@ -13,13 +13,12 @@ import {
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import FitnessCenter from "@material-ui/icons/FitnessCenter";
 import { NavLink, useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     nested: {
-      paddingLeft: theme.spacing(4),
+      paddingLeft: theme.spacing(8),
     },
     active: {
       backgroundColor: theme.palette.primary.dark,
@@ -49,7 +48,7 @@ const NavWeekItem: React.FC<{ week: Week; onNavItemClicked: () => void }> = ({
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {week.days.map((day) => (
+          {week.days.map((day, index) => (
             <ListItem
               key={day.id}
               button
@@ -59,10 +58,7 @@ const NavWeekItem: React.FC<{ week: Week; onNavItemClicked: () => void }> = ({
               component={NavLink}
               to={`/week/${week.id}/day/${day.id}`}
             >
-              <ListItemIcon>
-                <FitnessCenter />
-              </ListItemIcon>
-              <ListItemText primary={day.name} />
+              <ListItemText primary={`Day ${index + 1} - ${day.name}`} />
             </ListItem>
           ))}
         </List>

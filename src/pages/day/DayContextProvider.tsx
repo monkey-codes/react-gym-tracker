@@ -1,6 +1,6 @@
-import React, {useContext, useMemo} from "react";
-import ProgramContext, {Day, Week} from "../../store/ProgramContextProvider";
-import {useParams} from "react-router-dom";
+import React, { useContext, useMemo } from "react";
+import ProgramContext, { Day, Week } from "../../store/ProgramContextProvider";
+import { useParams } from "react-router-dom";
 
 const DayContext = React.createContext<Day | undefined>({
   name: "default",
