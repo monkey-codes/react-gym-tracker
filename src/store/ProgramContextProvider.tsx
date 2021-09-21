@@ -23,10 +23,14 @@ export type ExerciseGroup = {
   sets: number;
   exercises: Exercise[];
 };
-
+export const enum ExerciseType {
+  WEIGHT_AND_REPS,
+  REPS_ONLY
+}
 export type Exercise = {
   name: string;
   reps: number;
+  type: ExerciseType
 };
 
 let arms = {
@@ -42,6 +46,7 @@ let arms = {
         {
           name: "Rope Extensions",
           reps: 100,
+          type: ExerciseType.WEIGHT_AND_REPS
         },
       ],
     },
@@ -54,10 +59,12 @@ let arms = {
         {
           name: "Incline Skull Crusher",
           reps: 20,
+          type: ExerciseType.WEIGHT_AND_REPS
         },
         {
           name: "Seated French press (Partial at the bottom)",
           reps: 20,
+          type: ExerciseType.WEIGHT_AND_REPS
         },
       ],
     },
@@ -70,10 +77,12 @@ let arms = {
         {
           name: "Cable French Press",
           reps: 20,
+          type: ExerciseType.WEIGHT_AND_REPS
         },
         {
           name: "Overhead Rope Extension (Pronate Wrists)",
           reps: 20,
+          type: ExerciseType.WEIGHT_AND_REPS
         },
       ],
     },
@@ -86,6 +95,7 @@ let arms = {
         {
           name: "Close grip Bench (Slow)",
           reps: 20,
+          type: ExerciseType.WEIGHT_AND_REPS
         },
       ],
     },

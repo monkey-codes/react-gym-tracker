@@ -1,4 +1,4 @@
-import { Exercise } from "../../store/ProgramContextProvider";
+import { Exercise, ExerciseType } from "../../store/ProgramContextProvider";
 import {
   createStyles,
   makeStyles,
@@ -28,24 +28,29 @@ const ExerciseForm: React.FC<{ exercise: Exercise; activeSet: number }> = ({
       <div className={classes.item}>
         <Typography variant="body2">{exercise.name}</Typography>
       </div>
-      <div className={classes.item}>
-        <TextField
-          size="small"
-          fullWidth
-          label="Weight"
-          variant="outlined"
-          type="number"
-        />
-      </div>
-      <div className={classes.item}>
-        <TextField
-          size="small"
-          fullWidth
-          label="Reps"
-          variant="outlined"
-          type="number"
-        />
-      </div>
+      {exercise.type === ExerciseType.WEIGHT_AND_REPS && (
+        <div className={classes.item}>
+          <TextField
+            size="small"
+            fullWidth
+            label="Weight"
+            variant="outlined"
+            type="number"
+          />
+        </div>
+      )}
+      {(exercise.type === ExerciseType.WEIGHT_AND_REPS ||
+        exercise.type === ExerciseType.REPS_ONLY) && (
+        <div className={classes.item}>
+          <TextField
+            size="small"
+            fullWidth
+            label="Reps"
+            variant="outlined"
+            type="number"
+          />
+        </div>
+      )}
     </>
   );
 };
