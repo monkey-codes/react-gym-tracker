@@ -1,14 +1,6 @@
 import React from "react";
-import { ExerciseGroup } from "../../store/ProgramContextProvider";
-import {
-  Button,
-  createStyles,
-  Grid,
-  makeStyles,
-  MobileStepper,
-  Theme,
-  Typography,
-} from "@material-ui/core";
+import {ExerciseGroup} from "../../store/ProgramContextProvider";
+import {Button, Grid, MobileStepper, Typography,} from "@material-ui/core";
 import SwipeableViews from "react-swipeable-views";
 import ExerciseForm from "./ExerciseForm";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";

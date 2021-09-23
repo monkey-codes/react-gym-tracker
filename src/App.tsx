@@ -5,6 +5,7 @@ import { ProgramContextProvider } from "./store/ProgramContextProvider";
 import DayPage from "./pages/day/DayPage";
 import { Redirect, Route, Switch } from "react-router-dom";
 import blue from "@material-ui/core/colors/blue";
+import { ExerciseHistoryContextProvider } from "./store/ExerciseHistoryContextProvider";
 function App() {
   const theme = React.useMemo(
     () =>
@@ -22,15 +23,17 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <ProgramContextProvider>
-        <CssBaseline />
-        <Switch>
-          <Route path="/" exact>
-            <Redirect to="/week/0/day/0" />
-          </Route>
-          <Route path="/week/:weekId/day/:dayId">
-            <DayPage />
-          </Route>
-        </Switch>
+        <ExerciseHistoryContextProvider>
+          <CssBaseline />
+          <Switch>
+            <Route path="/" exact>
+              <Redirect to="/week/0/day/0" />
+            </Route>
+            <Route path="/week/:weekId/day/:dayId">
+              <DayPage />
+            </Route>
+          </Switch>
+        </ExerciseHistoryContextProvider>
       </ProgramContextProvider>
     </ThemeProvider>
   );
