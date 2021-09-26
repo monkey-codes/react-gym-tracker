@@ -1,5 +1,5 @@
-import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import React, {Dispatch, SetStateAction, useMemo, useState} from "react";
+import {v4 as uuidv4} from "uuid";
 
 export type Event = {
   id: string;
@@ -62,6 +62,32 @@ const ExerciseHistoryContext = React.createContext<ExerciseHistory>(
 );
 
 export const ExerciseHistoryContextProvider: React.FC = (props) => {
+  // const program = useContext(ProgramContext);
+  // useEffect(() => {
+  //   console.log('use effect')
+  //   const calendarDays = 10;
+  //   const msInADay = 1000*60*60*24;
+  //   var today = new Date().setHours(0,0,0,0);
+  //
+  //
+  //   var data = Array(calendarDays).fill(0).map((value, index) => today - (msInADay * index)).flatMap(timestamp =>
+  //     program.weeks.flatMap(week => week.days
+  //       .flatMap(day => day.exerciseGroups
+  //         .flatMap(exerciseGroup => exerciseGroup.exercises.flatMap(exercise => Array(exerciseGroup.sets).fill(0)
+  //           .map((value, zeroBasedSet) => {
+  //             const e: Event = {
+  //               id: uuidv4(),
+  //               exerciseId: exercise.id,
+  //               timestamp: timestamp+(1000*60*2),
+  //               set: zeroBasedSet,
+  //               weight: 1,
+  //               reps: 1,
+  //             }
+  //             return e;
+  //           } ))))));
+  //     console.log(data[10]);
+  //
+  // },[]);
   const [events, setEvents] = useState(new Array<Event>());
   console.log(events);
   const exerciseHistory = useMemo(
