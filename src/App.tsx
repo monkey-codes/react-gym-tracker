@@ -6,6 +6,8 @@ import DayPage from "./pages/day/DayPage";
 import { Redirect, Route, Switch } from "react-router-dom";
 import blue from "@material-ui/core/colors/blue";
 import { ExerciseHistoryContextProvider } from "./store/ExerciseHistoryContextProvider";
+import LoginPage from "./pages/LoginPage";
+import AuthGuard from "./components/AuthGuard";
 function App() {
   const theme = React.useMemo(
     () =>
@@ -29,8 +31,13 @@ function App() {
             <Route path="/" exact>
               <Redirect to="/week/0/day/0" />
             </Route>
+            <Route path="/login">
+              <LoginPage />
+            </Route>
             <Route path="/week/:weekId/day/:dayId">
-              <DayPage />
+              <AuthGuard>
+                <DayPage />
+              </AuthGuard>
             </Route>
           </Switch>
         </ExerciseHistoryContextProvider>

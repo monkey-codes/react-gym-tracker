@@ -1,6 +1,12 @@
-import {Exercise, ExerciseType} from "../../store/ProgramContextProvider";
-import {createStyles, makeStyles, TextField, Theme, Typography,} from "@material-ui/core";
-import React, {useContext, useMemo} from "react";
+import { Exercise, ExerciseType } from "../../store/ProgramContextProvider";
+import {
+  createStyles,
+  makeStyles,
+  TextField,
+  Theme,
+  Typography,
+} from "@material-ui/core";
+import React, { useContext, useMemo } from "react";
 import ExerciseHistoryContext from "../../store/ExerciseHistoryContextProvider";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -22,13 +28,18 @@ const ExerciseForm: React.FC<{ exercise: Exercise; activeSet: number }> = ({
     return exerciseHistory.getEvent(exercise.id, activeSet);
   }, [exerciseHistory, exercise.id, activeSet]);
 
-
   function weightBlurHandler(e: React.FocusEvent<HTMLInputElement>) {
-    exerciseHistory.updateEvent(event, {weight:  +e.target.value, reps: event.reps});
+    exerciseHistory.updateEvent(event, {
+      weight: +e.target.value,
+      reps: event.reps,
+    });
   }
 
   function repsBlurHandler(e: React.FocusEvent<HTMLInputElement>) {
-    exerciseHistory.updateEvent(event, {reps:  +e.target.value, weight: event.weight});
+    exerciseHistory.updateEvent(event, {
+      reps: +e.target.value,
+      weight: event.weight,
+    });
   }
 
   return (
@@ -44,7 +55,7 @@ const ExerciseForm: React.FC<{ exercise: Exercise; activeSet: number }> = ({
             label="Weight"
             variant="outlined"
             type="number"
-            value={event.weight || ''}
+            value={event.weight || ""}
             onChange={weightBlurHandler}
           />
         </div>
@@ -58,7 +69,7 @@ const ExerciseForm: React.FC<{ exercise: Exercise; activeSet: number }> = ({
             label="Reps"
             variant="outlined"
             type="number"
-            value={event.reps || ''}
+            value={event.reps || ""}
             onChange={repsBlurHandler}
           />
         </div>

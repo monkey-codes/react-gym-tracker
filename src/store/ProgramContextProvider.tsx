@@ -25,13 +25,13 @@ export type ExerciseGroup = {
 };
 export const enum ExerciseType {
   WEIGHT_AND_REPS,
-  REPS_ONLY
+  REPS_ONLY,
 }
 export type Exercise = {
   id: string;
   name: string;
   reps: number;
-  type: ExerciseType
+  type: ExerciseType;
 };
 
 let arms = {
@@ -45,10 +45,10 @@ let arms = {
       sets: 2,
       exercises: [
         {
-          id: 'CA30B01E-65EA-491D-A774-C3F90519B836',
+          id: "CA30B01E-65EA-491D-A774-C3F90519B836",
           name: "Rope Extensions",
           reps: 100,
-          type: ExerciseType.WEIGHT_AND_REPS
+          type: ExerciseType.WEIGHT_AND_REPS,
         },
       ],
     },
@@ -59,16 +59,16 @@ let arms = {
       sets: 3,
       exercises: [
         {
-          id: 'B850102B-E94C-4404-ACF7-11FBAEEC414E',
+          id: "B850102B-E94C-4404-ACF7-11FBAEEC414E",
           name: "Incline Skull Crusher",
           reps: 20,
-          type: ExerciseType.WEIGHT_AND_REPS
+          type: ExerciseType.WEIGHT_AND_REPS,
         },
         {
-          id: 'E9343945-2D37-43EF-A55D-F72AC684F75F',
+          id: "E9343945-2D37-43EF-A55D-F72AC684F75F",
           name: "Seated French press (Partial at the bottom)",
           reps: 20,
-          type: ExerciseType.WEIGHT_AND_REPS
+          type: ExerciseType.WEIGHT_AND_REPS,
         },
       ],
     },
@@ -79,16 +79,16 @@ let arms = {
       sets: 3,
       exercises: [
         {
-          id: '77DF5E73-2F50-430A-82C8-BB76CE401F27',
+          id: "77DF5E73-2F50-430A-82C8-BB76CE401F27",
           name: "Cable French Press",
           reps: 20,
-          type: ExerciseType.WEIGHT_AND_REPS
+          type: ExerciseType.WEIGHT_AND_REPS,
         },
         {
-          id: '28ACF915-790E-4B56-A20A-DBE0780AA271',
+          id: "28ACF915-790E-4B56-A20A-DBE0780AA271",
           name: "Overhead Rope Extension (Pronate Wrists)",
           reps: 20,
-          type: ExerciseType.WEIGHT_AND_REPS
+          type: ExerciseType.WEIGHT_AND_REPS,
         },
       ],
     },
@@ -99,10 +99,10 @@ let arms = {
       sets: 3,
       exercises: [
         {
-          id: '944AEF02-3428-4770-94E7-6FF5C43A883D',
+          id: "944AEF02-3428-4770-94E7-6FF5C43A883D",
           name: "Close grip Bench (Slow)",
           reps: 20,
-          type: ExerciseType.WEIGHT_AND_REPS
+          type: ExerciseType.WEIGHT_AND_REPS,
         },
       ],
     },
