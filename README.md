@@ -2,6 +2,14 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Heroku deploy
+
+```
+$ heroku static:deploy
+```
+https://github.com/heroku/heroku-buildpack-static
+https://gist.github.com/hone/24b06869b4c1eca701f9
+
 ## Available Scripts
 
 In the project directory, you can run:

@@ -1,3 +1,12 @@
 {
-  "root": "build/"
+  "root": "build/",
+  "routes": {
+    "static/css/*": "static/css/",
+    "static/js/*": "static/js/",
+    "asset-manifest.json": "asset-manifest.json",
+    "manifest.json": "manifest.json",
+    "robots.txt": "robots.txt",
+    "favicon.ico": "favicon.ico",
+    "/**": "index.html"
+  }
 }
