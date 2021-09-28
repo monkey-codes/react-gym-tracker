@@ -9,6 +9,7 @@ const DayContext = React.createContext<Day | undefined>({
 });
 
 export const DayContextProvider: React.FC = (props) => {
+  console.log('new day context');
   const params = useParams<{ weekId: string; dayId: string }>();
   const program = useContext(ProgramContext);
   const week = useMemo<Week | undefined>(

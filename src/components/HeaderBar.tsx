@@ -1,6 +1,7 @@
 import React from "react";
 import {
   AppBar,
+  Button,
   IconButton,
   makeStyles,
   Toolbar,
@@ -8,7 +9,7 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import NavDrawer from "./NavDrawer";
-
+import { logout } from "../firebase";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -30,6 +31,11 @@ const HeaderBar: React.FC = (props) => {
   const closeButtonHandler = () => {
     setOpen(false);
   };
+
+  const logoutHandler = async () => {
+    await logout();
+  };
+
   return (
     <div>
       <AppBar position="static">
@@ -43,9 +49,12 @@ const HeaderBar: React.FC = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" component="div" className={classes.title}>
             GymTracker
           </Typography>
+          <Button color="inherit" onClick={logoutHandler}>
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
       <NavDrawer open={open} onClose={closeButtonHandler} />

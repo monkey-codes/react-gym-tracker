@@ -1,5 +1,6 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+import "firebase/compat/firestore";
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -12,7 +13,7 @@ const firebaseConfig = {
 
 const app = firebase.initializeApp(firebaseConfig);
 const auth = app.auth();
-
+const db = app.firestore();
 const signInWithEmailAndPassword = async (email: string, password: string) => {
   try {
     await auth.signInWithEmailAndPassword(email, password);
@@ -26,4 +27,4 @@ const logout = async () => {
   await auth.signOut();
 };
 
-export { auth, signInWithEmailAndPassword, logout };
+export { auth, signInWithEmailAndPassword, logout, db };

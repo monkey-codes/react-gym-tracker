@@ -28,14 +28,14 @@ const ExerciseForm: React.FC<{ exercise: Exercise; activeSet: number }> = ({
     return exerciseHistory.getEvent(exercise.id, activeSet);
   }, [exerciseHistory, exercise.id, activeSet]);
 
-  function weightBlurHandler(e: React.FocusEvent<HTMLInputElement>) {
+  function weightChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     exerciseHistory.updateEvent(event, {
       weight: +e.target.value,
       reps: event.reps,
     });
   }
 
-  function repsBlurHandler(e: React.FocusEvent<HTMLInputElement>) {
+  function repsChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     exerciseHistory.updateEvent(event, {
       reps: +e.target.value,
       weight: event.weight,
@@ -56,7 +56,7 @@ const ExerciseForm: React.FC<{ exercise: Exercise; activeSet: number }> = ({
             variant="outlined"
             type="number"
             value={event.weight || ""}
-            onChange={weightBlurHandler}
+            onChange={weightChangeHandler}
           />
         </div>
       )}
@@ -70,7 +70,7 @@ const ExerciseForm: React.FC<{ exercise: Exercise; activeSet: number }> = ({
             variant="outlined"
             type="number"
             value={event.reps || ""}
-            onChange={repsBlurHandler}
+            onChange={repsChangeHandler}
           />
         </div>
       )}
