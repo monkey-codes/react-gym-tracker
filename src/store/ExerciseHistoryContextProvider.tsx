@@ -1,14 +1,8 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { db, sync, syncBuffer } from "../firebase";
-import { useInterval } from "usehooks-ts";
-import { v4 as uuidv4 } from "uuid";
+import React, {Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState,} from "react";
+import {db, sync, syncBuffer} from "../firebase";
+import {collection, getDocs, orderBy, query} from "firebase/firestore"
+import {useInterval} from "usehooks-ts";
+import {v4 as uuidv4} from "uuid";
 
 export type Event = {
   id: string;
@@ -39,6 +33,15 @@ class ExerciseHistory {
       event.set === setNumber &&
       event.timestamp >= start &&
       event.timestamp <= end;
+  }
+
+  private not(fn: (e: Event) => boolean): (e: Event) => boolean {
+    return e => !fn(e)
+  }
+
+  mostRecentHistory(event: Event): Event | undefined {
+    const historicEvents: Event[] | undefined = (this.eventsGroupedByExerciseId[event.exerciseId] || []).filter(this.not(this.eventThatOccurredToday(event.set)))
+    return historicEvents ? historicEvents[historicEvents.length-1] : undefined;
   }
 
   getEvent(exerciseId: string, setNumber: number): Event {
@@ -107,7 +110,8 @@ export const ExerciseHistoryContextProvider: React.FC = (props) => {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await db.collection("events").get();
+      // const data = await db.collection("events").get();
+      const data =  await getDocs(query(collection(db, "events"), orderBy("timestamp", "asc")));
       const events = data.docs.reduce((acc, currentVal) => {
         const event = currentVal.data() as Event;
         (acc[event.exerciseId] = acc[event.exerciseId] || []).push(event);
