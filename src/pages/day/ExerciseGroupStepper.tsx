@@ -13,7 +13,7 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core";
-import DayContext from "./DayContextProvider";
+import WorkoutContext from "./WorkoutContextProvider";
 import ExerciseGroupContainer from "./ExerciseGroupContainer";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
@@ -40,11 +40,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ExerciseGroupStepper: React.FC = (props) => {
   const classes = useStyles();
-  const day = useContext(DayContext);
+  const { programDay } = useContext(WorkoutContext);
   const [activeStep, setActiveStep] = React.useState(0);
   useEffect(() => {
     setActiveStep(0);
-  }, [day]);
+  }, [programDay]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -61,7 +61,7 @@ const ExerciseGroupStepper: React.FC = (props) => {
   return (
     <div>
       <Stepper activeStep={activeStep} orientation="vertical">
-        {day!.exerciseGroups.map((exerciseGroup, index) => (
+        {programDay!.exerciseGroups.map((exerciseGroup, index) => (
           <Step key={index}>
             <StepLabel>{exerciseGroup.name}</StepLabel>
             <StepContent>
@@ -86,7 +86,7 @@ const ExerciseGroupStepper: React.FC = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                   <div className={classes.actionsContainer}>
-                    {activeStep !== day!.exerciseGroups.length - 1 && (
+                    {activeStep !== programDay!.exerciseGroups.length - 1 && (
                       <Fab
                         size="small"
                         color="primary"
@@ -97,7 +97,7 @@ const ExerciseGroupStepper: React.FC = (props) => {
                         <ArrowDownwardIcon />
                       </Fab>
                     )}
-                    {activeStep === day!.exerciseGroups.length - 1 && (
+                    {activeStep === programDay!.exerciseGroups.length - 1 && (
                       <Button
                         fullWidth
                         color="primary"
@@ -114,7 +114,7 @@ const ExerciseGroupStepper: React.FC = (props) => {
           </Step>
         ))}
       </Stepper>
-      {activeStep === day!.exerciseGroups.length && (
+      {activeStep === programDay!.exerciseGroups.length && (
         <Paper square elevation={0} className={classes.resetContainer}>
           <Typography>
             All exercises completed - you&apos;re finished

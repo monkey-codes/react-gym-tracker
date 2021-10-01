@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import DayContext from "./DayContextProvider";
+import WorkoutContext from "./WorkoutContextProvider";
 import { createStyles, makeStyles, Theme, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -14,10 +14,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const DayHeading: React.FC = (props) => {
   const classes = useStyles();
-  const day = useContext(DayContext);
+  const { programDay } = useContext(WorkoutContext);
   return (
     <div className={classes.resetContainer}>
-      <Typography variant="h5">{day?.name}</Typography>
+      <Typography variant="h5">{programDay?.name}</Typography>
     </div>
   );
 };

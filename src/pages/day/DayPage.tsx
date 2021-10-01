@@ -1,6 +1,6 @@
 import React from "react";
 import Page from "../Page";
-import { DayContextProvider } from "./DayContextProvider";
+import { WorkoutContextProvider } from "./WorkoutContextProvider";
 import {
   Container,
   createStyles,
@@ -24,14 +24,14 @@ const DayPage: React.FC = (props) => {
   const classes = useStyles();
   return (
     <Page>
-      <DayContextProvider>
+      <WorkoutContextProvider>
         <Container maxWidth="sm">
           <Paper className={classes.container}>
             <DayHeading />
             <ExerciseGroupStepper />
           </Paper>
         </Container>
-      </DayContextProvider>
+      </WorkoutContextProvider>
     </Page>
   );
 };

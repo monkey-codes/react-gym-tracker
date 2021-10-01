@@ -1,13 +1,14 @@
 import React, {
   Dispatch,
   SetStateAction,
-  useCallback, useEffect,
+  useCallback,
+  useEffect,
   useMemo,
   useState,
 } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { db } from "../firebase";
+import { db, sync, syncBuffer } from "../firebase";
 import { useInterval } from "usehooks-ts";
+import { v4 as uuidv4 } from "uuid";
 
 export type Event = {
   id: string;
@@ -18,105 +19,114 @@ export type Event = {
   reps: number | null;
 };
 
-export class ExerciseHistory {
+type EventsGroupedByExerciseId = {
+  [key: string]: Array<Event>;
+};
+
+class ExerciseHistory {
   constructor(
-    private events: Event[],
-    private setEvents: Dispatch<SetStateAction<Event[]>>,
-    private onEventCreated: (event: Event) => void = () => {},
-    private onEventUpdated: (event: Event) => void = () => {}
+    public eventsGroupedByExerciseId: EventsGroupedByExerciseId,
+    private setEventsGroupedByExerciseId: Dispatch<
+      SetStateAction<EventsGroupedByExerciseId>
+    > = () => {},
+    public syncEvent: (e: Event) => void = () => {}
   ) {}
 
-  getEvent(exerciseId: string, setNumber: number): Event {
+  private eventThatOccurredToday(setNumber: number): (e: Event) => boolean {
     const start = new Date().setHours(0, 0, 0, 0);
     const end = new Date().setHours(23, 59, 59, 999);
-    const event = this.events.find((event) => {
-      return (
-        event.exerciseId === exerciseId &&
-        event.set === setNumber &&
-        event.timestamp > start &&
-        event.timestamp < end
-      );
+    return (event: Event) =>
+      event.set === setNumber &&
+      event.timestamp >= start &&
+      event.timestamp <= end;
+  }
+
+  getEvent(exerciseId: string, setNumber: number): Event {
+    const newEvent = () => ({
+      id: uuidv4(),
+      exerciseId: exerciseId,
+      set: setNumber,
+      timestamp: Date.now(),
+      weight: null,
+      reps: null,
     });
-    if (!event) {
-      const newEvent = {
-        id: uuidv4(),
-        exerciseId: exerciseId,
-        set: setNumber,
-        timestamp: Date.now(),
-        weight: null,
-        reps: null,
-      };
-      return newEvent;
+
+    if (this.eventsGroupedByExerciseId[exerciseId]) {
+      return (
+        this.eventsGroupedByExerciseId[exerciseId].find(
+          this.eventThatOccurredToday(setNumber)
+        ) || newEvent()
+      );
     }
-    return event;
+    return newEvent();
   }
 
   public updateEvent(
     event: Event,
     fields: { weight: number | null; reps: number | null }
   ) {
-    if (!this.events.find(({ id }) => id === event.id)) {
-      let newEvent = { ...event, ...fields };
-      this.setEvents((prevState) => [...prevState, newEvent]);
-      this.onEventCreated(newEvent);
-      return;
-    }
-    this.setEvents((prevState) =>
-      prevState.map((evt) => {
-        if (evt.id !== event.id) return evt;
-        let updatedEvent = { ...evt, ...fields };
-        this.onEventUpdated(updatedEvent);
-        return updatedEvent;
-      })
-    );
+    const newEvent = { ...event, ...fields };
+    this.setEventsGroupedByExerciseId((prevState) => {
+      const byExercise: Event[] = prevState[newEvent.exerciseId] || [];
+      const existingEvent = byExercise.find(
+        this.eventThatOccurredToday(event.set)
+      );
+      if (existingEvent) {
+        return {
+          ...prevState,
+          [newEvent.exerciseId]: byExercise.map((value) => {
+            if (value.id !== existingEvent.id) return value;
+            return newEvent;
+          }),
+        } as EventsGroupedByExerciseId;
+      }
+      return {
+        ...prevState,
+        [newEvent.exerciseId]: [...byExercise, newEvent],
+      } as EventsGroupedByExerciseId;
+    });
+    this.syncEvent(newEvent);
   }
 }
-
 const ExerciseHistoryContext = React.createContext<ExerciseHistory>(
-  new ExerciseHistory([], () => {})
+  new ExerciseHistory({})
 );
 
-const syncBuffer = new Array<Event>();
-
-const sync = async () => {
-  if (syncBuffer.length === 0) return;
-  const copy = syncBuffer.splice(0, syncBuffer.length);
-  // only look at the most recent updates
-  const latestEventsForIdOnly = copy.reduce<{[key: string]: Event}>((acc, current) => {
-    acc[current.id] = current;
-    return acc;
-  }, {});
-  // sort chronologically
-  const events = Object.values(latestEventsForIdOnly).sort((a: Event, b: Event) => a.timestamp - b.timestamp)
-  const batch = db.batch();
-  events.forEach(event => {
-    batch.set(db.collection("events").doc(event.id), event)
-  });
-  console.log(`syncing ${events.length} events...`);
-  await batch.commit();
-};
-
 export const ExerciseHistoryContextProvider: React.FC = (props) => {
-  const [events, setEvents] = useState(new Array<Event>());
-  const syncEvents = useCallback(async (event: Event) => {
+  const [eventsGroupedByExerciseId, setEventsGroupedByExerciseId] = useState(
+    {} as EventsGroupedByExerciseId
+  );
+  const syncEvent = useCallback((event: Event) => {
+    console.log("pushing to sync buffer", event);
     syncBuffer.push(event);
   }, []);
 
   useInterval(async () => {
     await sync();
-  }, 10000);
+  }, 5000);
 
-  useEffect( () => {
+  useEffect(() => {
     const getData = async () => {
-     const data = await db.collection('events').get();
-     setEvents(data.docs.map<Event>(value => value.data() as Event));
+      const data = await db.collection("events").get();
+      const events = data.docs.reduce((acc, currentVal) => {
+        const event = currentVal.data() as Event;
+        (acc[event.exerciseId] = acc[event.exerciseId] || []).push(event);
+        return acc;
+      }, {} as EventsGroupedByExerciseId);
+      setEventsGroupedByExerciseId(events);
+      return events;
     };
-    getData();
-  }, [setEvents]);
-  console.log(events);
+    getData().then(console.log.bind(console));
+  }, [setEventsGroupedByExerciseId]);
+
   const exerciseHistory = useMemo(
-    () => new ExerciseHistory(events, setEvents, syncEvents, syncEvents),
-    [events, syncEvents]
+    () =>
+      new ExerciseHistory(
+        eventsGroupedByExerciseId,
+        setEventsGroupedByExerciseId,
+        syncEvent
+      ),
+    [eventsGroupedByExerciseId, setEventsGroupedByExerciseId, syncEvent]
   );
   return (
     <ExerciseHistoryContext.Provider value={exerciseHistory}>
@@ -126,29 +136,3 @@ export const ExerciseHistoryContextProvider: React.FC = (props) => {
 };
 
 export default ExerciseHistoryContext;
-// const program = useContext(ProgramContext);
-// useEffect(() => {
-//   console.log('use effect')
-//   const calendarDays = 10;
-//   const msInADay = 1000*60*60*24;
-//   var today = new Date().setHours(0,0,0,0);
-//
-//
-//   var data = Array(calendarDays).fill(0).map((value, index) => today - (msInADay * index)).flatMap(timestamp =>
-//     program.weeks.flatMap(week => week.days
-//       .flatMap(day => day.exerciseGroups
-//         .flatMap(exerciseGroup => exerciseGroup.exercises.flatMap(exercise => Array(exerciseGroup.sets).fill(0)
-//           .map((value, zeroBasedSet) => {
-//             const e: Event = {
-//               id: uuidv4(),
-//               exerciseId: exercise.id,
-//               timestamp: timestamp+(1000*60*2),
-//               set: zeroBasedSet,
-//               weight: 1,
-//               reps: 1,
-//             }
-//             return e;
-//           } ))))));
-//     console.log(data[10]);
-//
-// },[]);
