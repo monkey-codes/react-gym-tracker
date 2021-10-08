@@ -35,15 +35,6 @@ class ExerciseHistory {
       event.timestamp <= end;
   }
 
-  private not(fn: (e: Event) => boolean): (e: Event) => boolean {
-    return e => !fn(e)
-  }
-
-  mostRecentHistory(event: Event): Event | undefined {
-    const historicEvents: Event[] | undefined = (this.eventsGroupedByExerciseId[event.exerciseId] || []).filter(this.not(this.eventThatOccurredToday(event.set)))
-    return historicEvents ? historicEvents[historicEvents.length-1] : undefined;
-  }
-
   getEvent(exerciseId: string, setNumber: number): Event {
     const newEvent = () => ({
       id: uuidv4(),

@@ -1,13 +1,6 @@
 import React from "react";
-import Page from "../Page";
-import { WorkoutContextProvider } from "./WorkoutContextProvider";
-import {
-  Container,
-  createStyles,
-  makeStyles,
-  Paper,
-  Theme,
-} from "@material-ui/core";
+import {WorkoutContextProvider} from "./WorkoutContextProvider";
+import {Container, createStyles, makeStyles, Paper, Theme,} from "@material-ui/core";
 import DayHeading from "./DayHeading";
 import ExerciseGroupStepper from "./ExerciseGroupStepper";
 
@@ -23,16 +16,14 @@ const useStyles = makeStyles((theme: Theme) =>
 const DayPage: React.FC = (props) => {
   const classes = useStyles();
   return (
-    <Page>
-      <WorkoutContextProvider>
-        <Container maxWidth="sm">
-          <Paper className={classes.container}>
-            <DayHeading />
-            <ExerciseGroupStepper />
-          </Paper>
-        </Container>
-      </WorkoutContextProvider>
-    </Page>
+    <WorkoutContextProvider>
+      <Container maxWidth="sm">
+        <Paper className={classes.container}>
+          <DayHeading />
+          <ExerciseGroupStepper />
+        </Paper>
+      </Container>
+    </WorkoutContextProvider>
   );
 };
 

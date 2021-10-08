@@ -1,5 +1,5 @@
 import React from "react";
-import { Week } from "../store/ProgramContextProvider";
+import {Week} from "../store/ProgramContextProvider";
 import {
   Collapse,
   createStyles,
@@ -13,7 +13,7 @@ import {
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { NavLink, useParams } from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
